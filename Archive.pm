@@ -109,7 +109,7 @@ sub genDateThumb {
 	print STDERR "Updating date thumbnail\n";
 
 	my $image = Image::Magick->new();
-	$image->Set(density=>'300x300');
+	#$image->Set(density=>'300x300');
 	$image->Read($filepath . '[0]');
 	my ( $width, $height ) = $image->Get('width', 'height');
 
