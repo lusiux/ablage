@@ -7,5 +7,6 @@ Das Projekt wurde im Rahmen einer Session auf dem SWEC 2017 (https://swe-camp.de
 - Usage instrustion
 - Apache snippet
 - Document sources of javascript code and bootstrap
+- Remove local versions of bootstrap, jquery, jquery-ui and magisuggest from repository
 - Screenshots
 - Cleanup of result page
