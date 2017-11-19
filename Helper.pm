@@ -137,7 +137,7 @@ sub findDates {
 
 		foreach my $monthName ( keys %month ) {
 			#print "Trying regexp: /(\d{1,2})?\.?$monthName\.?(([12]\d)?$shortSearchYear)/ig\n";
-			my $regexp = qr/(\d{1,2})?(\.|_|')?$monthName(([12]\d)?$shortSearchYear)/;
+			my $regexp = qr/(\d{1,2})?(\.|_|')?$monthName(([12]\d)?$shortSearchYear)/i;
 			while ( ($line =~ /$regexp/ig) ) {
 				my $dayString = $1;
 				my $dayDot = $2;
