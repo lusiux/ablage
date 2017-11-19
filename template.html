@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="lib/magicsuggest/magicsuggest.css" rel="stylesheet">
+	<link href="lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+	<link href="lib/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="lib/jquery/jquery-3.1.1.min.js"></script>
+	<script src="lib/jquery-ui/jquery-ui.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="lib/magicsuggest/magicsuggest.js"></script>
+	<script src="js/script.js"></script>
+
+	<script>
+	$( document ).ready(function() {
+		$( "#cliSender" ).hide();
+		$( "#cliSender" ).text($( "#sender" ).text());
+		$( "#cliSender" ).show();
+
+		$( ".senderTagItem").hide();
+		$( "#senderTags" + $( "#sender" ).text()).show();
+
+		$( "#datepicker" ).datepicker({
+			dateFormat: "dd.mm.yy",
+		});
+
+		$( "#cliDate" ).hide();
+		$( "#cliDate" ).text($( "#datepicker" ).val());
+		$( "#cliDate" ).show();
+
+		$( "#dateChoice" ).on('change', function() {
+			$( "#cliDate" ).text( this.value );
+			$( "#datepicker" ).val( this.value );
+		});
+
+		$( "#senderChoice" ).on('change', function() {
+			$( "#cliSender" ).text( this.value );
+			$( "#sender" ).text( this.value );
+		});
+
+		var ms = $( "#ms" ).magicSuggest({
+			placeholder: 'Tags',
+			data: [ %%JSONTAGLIST%% ],
+			value: [ %%htmlTagsValueList%% ],
+		});
+		$("#cliTags").text( ms.getValue().join(","));
+		$(ms).on('selectionchange', function(e,m){
+			$("#cliTags").text(this.getValue().join(","));
+		});
+
+		var msSender = $( "#ms-sender" ).magicSuggest({
+			placeholder: 'Sender',
+			data: [ %%jsonSenderList%% ],
+			value: [ %%htmlSenderValueList%% ],
+		});
+		$("#cliSender").text( msSender.getValue().join(","));
+		$("#sender").text( msSender.getValue().join(","));
+		$(msSender).on('selectionchange', function(e,m){
+			$("#sender").text(this.getValue().join(","));
+			$("#cliSender").text(this.getValue().join(","));
+
+			var arr = this.getValue();
+
+			$( ".senderTagItem").hide();
+			for (var i = 0; i < arr.length; i++) {
+				$( "#senderTags" + arr[i]).show();
+			}
+		});
+
+		$( "#datepicker" ).on('change', function() {
+			$( "#cliDate" ).text( this.value );
+			$( "#date" ).text( this.value );
+		});
+	});
+	</script>
+</head>
+<body>
+<table class="%%cls%%">
+<tr>
+<td>
+
+<iframe src="%%filename%%" seamless width="700px" height="670px" name="show pdf">
+	Here should be the PDF shown with PDF.js
+	<a href="%%filename%%"></a>
+</iframe>
+
+</td>
+<td>
+<textarea style="width:600px;height:670px">
+%%debugInformation%%
+</textarea>
+</td>
+<td>
+<textarea style="width:600px;height:670px;">
+%%text%%
+</textarea>
+</td>
+</tr>
+</table>
+<style>
+table.%%cls%% {
+	background-color:%%bgColor%%
+}
+</style>
+<br>
+<table>
+	<tr>
+		<td class="header" style="background-color:%%HTMLDATECOLOR%%">Date</td>
+		<td style="background-color:%%HTMLDATECOLOR%%"><input type="text" id="datepicker" value="%%HTMLDATE%%"/></td>
+		<td>
+			%%htmlDateList%%
+		</td>
+	</tr>
+	<tr>
+		<td class="header" style="background-color:%%htmlSenderColor%%">Sender</td>
+		<td colspan=2><input style="width:300px" class="form-control" id="ms-sender"/>
+		<td style="background-color:%%htmlSenderColor%%" id="sender">%%htmlSender%%</td>
+	</tr>
+	<tr>
+		<td class="header" style="background-color:%%htmlTagsColor%%">Tags</td>
+		<td colspan=3>
+			<input style="width:300px" class="form-control" id="ms"/>
+		</td>
+		<td>
+			%%htmlSenderTagList%%
+		</td>
+	<tr>
+</table>
+<br>
+<h3>classify command line</h3>
+<pre style="%%reclassify%%">
+./classify.pl -sender "<span id="cliSender"></span>" -date "<span id="cliDate"></span>" -tags "<span id="cliTags"></span>" %%htmlSearchYear%% %%htmlOverrides%% %%filename%% <span id="cliDo">%%htmlDo%%</span>
+</pre>
+<br>
+</body>
+</html>

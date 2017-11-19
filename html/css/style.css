@@ -1,0 +1,12 @@
+td {
+	padding: 0.2em;
+}
+
+td.header {
+	font-weight: bold;
+}
+
+textarea {
+	font-family: monospace;
+}
+

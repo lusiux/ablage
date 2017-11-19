@@ -1,0 +1,45 @@
+package Classes;
+
+use utf8;
+
+# All regular expressions are stored in a perl hash.
+#
+# Each regexp entry has the following form:
+# It is possible to specify only sender or only tags.
+#	'regexp' => { # Regular expression to match contents of pdf.
+#		sender => 'blafoo', # If regexp matches, the sender will be added
+#		dateIndex => 1, # Optional to prefer date at index position
+#		tags => [ # If regexp matches, these tags will be added
+#			'rechnung',
+#		],
+#	},
+
+our $regexps = {
+	'^rechnung' => {
+		tags => [
+			'rechnung',
+		],
+	},
+	'Kontoauszug' => {
+		tags => [
+			'kontoauszug',
+		],
+	},
+	'steuerbescheid' => {
+		tags => [
+			'steuerbescheid',
+		],
+	},
+	'nebenkostenabrechnung' => {
+		tags => [
+			'nebenkostenabrechnung',
+		],
+	},
+	'einzelverbindungsnachweis' => {
+		tags => [
+			'evn',
+		],
+	},
+};
+
+1;
