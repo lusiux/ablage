@@ -7,6 +7,9 @@ use Data::Dumper;
 use Getopt::Long qw(GetOptions);
 use utf8;
 
+use FindBin;
+use lib "$FindBin::Bin/";
+
 use Helper;
 use Classes;
 
