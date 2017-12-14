@@ -4,11 +4,11 @@ Das Projekt wurde im Rahmen einer Session auf dem SWEC 2017 (https://swe-camp.de
 
 ## General
 
-Currently ablage has two different ways to use it:
+Currently ablage has two different modes to use it:
 * command line
 * web based gui
 
-The different ways unfortunately do **slightliy different** things!
+The different modes unfortunately do **slightliy different** things!
 
 ## Setup
 
