@@ -21,6 +21,12 @@ Packages
 Perl modules
 * Date::Time
 
+Web modules:
+* bootstrap
+* jquery
+* jquery-ui
+* magisuggest
+
 ### Installation
 
 Initialize your own `Classes.pm` based on `Classes.pm.tmpl`.
