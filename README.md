@@ -2,6 +2,24 @@
 
 Das Projekt wurde im Rahmen einer Session auf dem SWEC 2017 (https://swe-camp.de/) vorgestellt und anschließend hier veröffentlicht.
 
+## Setup
+
+### Dependencies
+
+Packages
+* tesseract and the two data packages `deu` and `eng`
+* ocrmypdf
+
+Perl modules
+* datetime
+
+Initialize your own `Classes.pm` based on `Classes.pm.tmpl`.
+
+
+## Usage
+
+Store your pdfs in `./store` and run `make`.
+
 ## TODOs
 - Installation instruction
 - Usage instrustion
