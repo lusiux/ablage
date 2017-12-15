@@ -48,6 +48,12 @@ Just open the configured URL in your browser and choose the pdf to classify.
 Changing date, sender and tags with modify the command line shown at the buttom of the document.
 To archive a pdf in `./store` run the command given at the end of the html file with den command line argument `-do`
 
+## uWSGI - WiP!
+
+Currently a psgi mode is in development to drop the dependancy to apache2. 
+
+`uwsgi_psgi --http-socket :1237 --http-socket-modifier1 5 --psgi classify.psgi --processes 4 --master --check-static html --check-static ./`
+
 
 ## TODOs
 - Installation instruction
