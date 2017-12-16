@@ -21,10 +21,37 @@ use Archive;
 my $archive = new Archive();
 
 use Template;
+use Image::Magick;
+
+my $cache = {};
 
 my $app = sub {
 	my $env = shift;
 	my $q = CGI::PSGI->new($env);
+	my $path = $env->{PATH_INFO};
+
+	if ( $path =~ /^\/images\/thumbs\/([^\/]+.pdf.jpg)$/i ) {
+		my $pdf = $1;
+		$pdf =~ s/\.jpg$//i;
+		$pdf .= '[0]';
+
+		if ( ! defined $cache->{$pdf} ) {
+			my $image = Image::Magick->new();
+			my $retVal = $image->Read('classify/' . $pdf);
+			warn $retVal if $retVal;
+			$image->Resize(geometry => "200x");
+			warn $retVal if $retVal;
+			my @data = $image->ImageToBlob(magick=>'jpeg');
+
+			$cache->{$pdf} = $data[0];
+		} else {
+			print "Using cached img $pdf\n";
+		}
+
+	return [
+	        '200',
+	 [ 'Content-Type' => 'image/jpeg' ], [ $cache->{$pdf} ] ];
+	}
 
 	my $template = Template->new('template.html');
 
@@ -40,7 +67,18 @@ my $app = sub {
 		my @files = glob("classify/*.pdf");
 		my $out = '';
 		foreach my $file ( @files ) {
-			$out .= qq{<a href="?file=$file">$file</a><br>};
+			my $title = substr($file, length('classify/'));
+			$out .= qq{
+<div style="display:inline-block;text-align:center;margin:1em;margin-bottom:4em;">
+	<a href="?file=$file">
+		<img style="border:1px solid black" src="images/thumbs/$title.jpg">
+	</a>
+	<br>
+	<a href="?file=$file">
+		$title
+	</a>
+</div>
+			};
 		}
 		return [
 				  '200',
