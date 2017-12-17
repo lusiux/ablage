@@ -30,9 +30,8 @@ my $app = sub {
 	my $q = CGI::PSGI->new($env);
 	my $path = $env->{PATH_INFO};
 
-	if ( $path =~ /^\/images\/thumbs\/([^\/]+.pdf.jpg)$/i ) {
+	if ( $path =~ /^\/images\/thumbs\/([^\/]+.pdf)$/i ) {
 		my $pdf = $1;
-		$pdf =~ s/\.jpg$//i;
 		$pdf .= '[0]';
 
 		if ( ! defined $cache->{$pdf} ) {
@@ -41,16 +40,16 @@ my $app = sub {
 			warn $retVal if $retVal;
 			$image->Resize(geometry => "200x");
 			warn $retVal if $retVal;
-			my @data = $image->ImageToBlob(magick=>'jpeg');
+			my @data = $image->ImageToBlob(magick=>'png');
 
 			$cache->{$pdf} = $data[0];
 		} else {
-			print "Using cached img $pdf\n";
+			print "Using cached img for $pdf\n";
 		}
 
 	return [
 	        '200',
-	 [ 'Content-Type' => 'image/jpeg' ], [ $cache->{$pdf} ] ];
+	 [ 'Content-Type' => 'image/png' ], [ $cache->{$pdf} ] ];
 	}
 
 	my $template = Template->new('template.html');
@@ -71,7 +70,7 @@ my $app = sub {
 			$out .= qq{
 <div style="display:inline-block;text-align:center;margin:1em;margin-bottom:4em;">
 	<a href="?file=$file">
-		<img style="border:1px solid black" src="images/thumbs/$title.jpg">
+		<img style="border:1px solid black" src="images/thumbs/$title">
 	</a>
 	<br>
 	<a href="?file=$file">
