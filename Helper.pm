@@ -151,7 +151,7 @@ sub findDates {
 					if ( ! defined $dates->{$dateString} ) {
 						$dates->{$dateString} = {};
 					}
-					if ( ! defined $dates->{$dateString}->{index} ) {
+					if ( ! defined $dates->{$dateString}->{count} ) {
 						$dates->{$dateString}->{count}=1;
 					} else {
 						$dates->{$dateString}->{count}++;
