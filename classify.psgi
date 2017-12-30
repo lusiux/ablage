@@ -50,6 +50,16 @@ my $app = sub {
 	return [
 	        '200',
 	 [ 'Content-Type' => 'image/png' ], [ $cache->{$pdf} ] ];
+	} elsif ( $path =~ /^\/images\/pdfs\/([^\/]+.pdf)$/i ) {
+		my $pdf = $1;
+		open PDF, '<', "classify/$pdf" or warn $!;
+		local $/;
+		my $content = <PDF>;
+		close PDF;
+
+		return [
+				  '200',
+		 [ 'Content-Type' => 'application/pdf' ], [ $content ] ];
 	}
 
 	my $template = Template->new('template.html');
@@ -62,18 +72,18 @@ my $app = sub {
 
 	my $filename = $q->param('file');
 
-	if ( ! defined $filename || $filename eq '' || $filename !~ /^classify\/[^\/]+\.pdf$/ || ! -f $filename ) {
+	if ( ! defined $filename || $filename eq '' || $filename !~ /^[^\/]+\.pdf$/ || ! -f "classify/$filename" ) {
 		my @files = glob("classify/*.pdf");
 		my $out = '';
 		foreach my $file ( @files ) {
 			my $title = substr($file, length('classify/'));
 			$out .= qq{
 <div style="display:inline-block;text-align:center;margin:1em;margin-bottom:4em;">
-	<a href="?file=$file">
+	<a href="?file=$title">
 		<img style="border:1px solid black" src="images/thumbs/$title">
 	</a>
 	<br>
-	<a href="?file=$file">
+	<a href="?file=$title">
 		$title
 	</a>
 </div>
@@ -84,7 +94,9 @@ my $app = sub {
 		 [ 'Content-Type' => 'text/html' ], [$out]];
 	}
 
-	$template->add('filename', ${filename});
+	my $fileTitle = $filename;
+	$template->add('filename', ${fileTitle});
+	$filename = "classify/$filename";
 
 	my $classes = $Classes::regexps;
 
