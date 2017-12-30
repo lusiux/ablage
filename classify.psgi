@@ -123,7 +123,7 @@ my $app = sub {
 
 	# Find dates in pdf text
 	my $monthRange = $q->param('month');
-	if ( $monthRange !~ /^\d+$/ ) {
+	if ( ! defined $monthRange || $monthRange !~ /^\d+$/ ) {
 		$monthRange = 3;
 	}
 	$monthRange *= -1;
