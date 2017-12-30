@@ -58,10 +58,8 @@
 			maxSelection: 1,
 			placeholder: 'Sender',
 			data: [ %%jsonSenderList%% ],
-			value: [ %%htmlSenderValueList%% ],
+			value: [ ],
 		});
-		$("#cliSender").text( msSender.getValue().join(","));
-		$("#sender").text( msSender.getValue().join(","));
 		$(msSender).on('selectionchange', function(e,m){
 			$("#sender").text(this.getValue().join(","));
 			$("#cliSender").text(this.getValue().join(","));
@@ -73,6 +71,9 @@
 				$( "#senderTags" + arr[i]).show();
 			}
 		});
+		msSender.setValue([ %%htmlSenderValueList%% ]);
+		$("#cliSender").text( msSender.getValue().join(","));
+		$("#sender").text( msSender.getValue().join(","));
 
 		$( "#datepicker" ).on('change', function() {
 			$( "#cliDate" ).text( this.value );
