@@ -88,6 +88,9 @@ EOHTML
 		 [ 'Content-Type' => 'text/html' ], [ $content ] ];
 	}
 
+	# Update archive information
+	$archive->readInformation();
+
 	my $template = Template->new('template.html');
 
 	# TODO
@@ -288,7 +291,7 @@ EOHTML
 			$date =~ s/(\d{4})-(\d{2})-(\d{2})/$3.$2.$1/g;
 			$date;
 		} sort { dateSort($info, $a, $b) }keys %{$info->{dates}};
-		$htmlDateList = "<select id=\"dateChoice\">\n<option value\"\" selected>\n$htmlDateList\n</select>\n";
+		$htmlDateList = "<select id=\"dateChoice\" class=\"form-control\">\n<option value\"\" selected>\n$htmlDateList\n</select>\n";
 	}
 	$template->add('htmldate', ${htmlDate});
 	$template->add('htmldatecolor', ${htmlDateColor});

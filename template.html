@@ -82,69 +82,51 @@
 	</script>
 </head>
 <body>
-<table class="%%cls%%">
-<tr>
-<td>
-
+<div style="table">
+<div class="%%cls%%" style="display:table-cell">
 <iframe src="/images/pdfs/%%filename%%" seamless width="700px" height="670px" name="show pdf">
 	Here should be the PDF shown with PDF.js
 	<a href="/images/pdfs/%%filename%%"></a>
 </iframe>
-
-</td>
-<td>
-<textarea style="width:600px;height:670px">
-%%debugInformation%%
-</textarea>
-</td>
-<td>
-<textarea style="width:600px;height:670px;">
-%%text%%
-</textarea>
-</td>
-</tr>
-</table>
-<style>
-table.%%cls%% {
-	background-color:%%bgColor%%
-}
-</style>
-<br>
+</div>
+<div style="display:table-cell;vertical-align:middle;padding:.3em">
 <form method="POST" action="classify/%%filename%%">
-	<table>
-		<tr>
-			<td class="header" style="background-color:%%HTMLDATECOLOR%%">Date</td>
-			<td style="background-color:%%HTMLDATECOLOR%%">
-				<input type="text" id="datepicker" name="date" value="%%HTMLDATE%%"/>
-			</td>
-			<td>
-				%%htmlDateList%%
-			</td>
-		</tr>
-		<tr>
-			<td class="header" style="background-color:%%htmlSenderColor%%">Sender</td>
-			<td colspan=2>
-				<input style="width:300px" class="form-control" id="ms-sender" name="sender"/>
-			</td>
-			<td style="background-color:%%htmlSenderColor%%" id="sender">%%htmlSender%%</td>
-		</tr>
-		<tr>
-			<td class="header" style="background-color:%%htmlTagsColor%%">Tags</td>
-			<td colspan=3>
-				<input name="tags" style="width:300px" class="form-control" id="ms"/>
-			</td>
-			<td>
-				%%htmlSenderTagList%%
-			</td>
-		<tr>
-	</table>
+	<div class="form-group">
+		<label for="datepicker">Date</label>
+		<input type="text" id="datepicker" name="date" value="%%HTMLDATE%%" class="form-control"/><br>
+		%%htmlDateList%%
+	</div>
+	<div class="form-group">
+		<label for="ms-sender">Sender</label>
+		<input style="width:300px" id="ms-sender" name="sender"/>
+	</div>
+	<div class="form-group">
+		<label for="ms">Tags</label><br>
+		%%htmlSenderTagList%%
+		<input name="tags" style="width:300px" id="ms"/>
+	</div>
 	<button type="submit" class="btn btn-default">Abschicken</button>
 </form>
+</div>
+</div>
+<style>
+div.%%cls%% {
+	background-color:%%bgColor%%;
+	padding:.3em;
+}
+</style>
 <br>
 <h3>classify command line</h3>
 <pre style="%%reclassify%%">
 ./classify.pl -sender "<span id="cliSender"></span>" -date "<span id="cliDate"></span>" -tags "<span id="cliTags"></span>" %%htmlSearchYear%% %%htmlOverrides%% %%filename%% <span id="cliDo">%%htmlDo%%</span>
 </pre>
 <br>
+<textarea style="width:600px;height:670px">
+%%debugInformation%%
+</textarea>
+<br>
+<textarea style="width:600px;height:670px;">
+%%text%%
+</textarea>
 </body>
 </html>
