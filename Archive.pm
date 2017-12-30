@@ -85,7 +85,8 @@ sub addFile {
 	$year =~ s/^(\d{4}).*/$1/;
 	$self->updateIndex('year', $newFilename, $year);
 
-	$self->genDateThumb($newFilename);
+	# $self->genDateThumb($newFilename);
+	return $newFilename;
 }
 
 sub genDateThumb {

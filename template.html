@@ -55,6 +55,7 @@
 		});
 
 		var msSender = $( "#ms-sender" ).magicSuggest({
+			maxSelection: 1,
 			placeholder: 'Sender',
 			data: [ %%jsonSenderList%% ],
 			value: [ %%htmlSenderValueList%% ],
@@ -109,29 +110,36 @@ table.%%cls%% {
 }
 </style>
 <br>
-<table>
-	<tr>
-		<td class="header" style="background-color:%%HTMLDATECOLOR%%">Date</td>
-		<td style="background-color:%%HTMLDATECOLOR%%"><input type="text" id="datepicker" value="%%HTMLDATE%%"/></td>
-		<td>
-			%%htmlDateList%%
-		</td>
-	</tr>
-	<tr>
-		<td class="header" style="background-color:%%htmlSenderColor%%">Sender</td>
-		<td colspan=2><input style="width:300px" class="form-control" id="ms-sender"/>
-		<td style="background-color:%%htmlSenderColor%%" id="sender">%%htmlSender%%</td>
-	</tr>
-	<tr>
-		<td class="header" style="background-color:%%htmlTagsColor%%">Tags</td>
-		<td colspan=3>
-			<input style="width:300px" class="form-control" id="ms"/>
-		</td>
-		<td>
-			%%htmlSenderTagList%%
-		</td>
-	<tr>
-</table>
+<form method="POST" action="classify/%%filename%%">
+	<table>
+		<tr>
+			<td class="header" style="background-color:%%HTMLDATECOLOR%%">Date</td>
+			<td style="background-color:%%HTMLDATECOLOR%%">
+				<input type="text" id="datepicker" name="date" value="%%HTMLDATE%%"/>
+			</td>
+			<td>
+				%%htmlDateList%%
+			</td>
+		</tr>
+		<tr>
+			<td class="header" style="background-color:%%htmlSenderColor%%">Sender</td>
+			<td colspan=2>
+				<input style="width:300px" class="form-control" id="ms-sender" name="sender"/>
+			</td>
+			<td style="background-color:%%htmlSenderColor%%" id="sender">%%htmlSender%%</td>
+		</tr>
+		<tr>
+			<td class="header" style="background-color:%%htmlTagsColor%%">Tags</td>
+			<td colspan=3>
+				<input name="tags" style="width:300px" class="form-control" id="ms"/>
+			</td>
+			<td>
+				%%htmlSenderTagList%%
+			</td>
+		<tr>
+	</table>
+	<button type="submit" class="btn btn-default">Abschicken</button>
+</form>
 <br>
 <h3>classify command line</h3>
 <pre style="%%reclassify%%">

@@ -60,6 +60,32 @@ my $app = sub {
 		return [
 				  '200',
 		 [ 'Content-Type' => 'application/pdf' ], [ $content ] ];
+	} elsif ( $path =~ /^\/classify\/([^\/]+.pdf)$/i ) {
+		my $filename = $1;
+		my $date = $q->param('date');
+		if ( $date =~ /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/ ) {
+			$date = "$3-$2-$1";
+		}
+		my @sender = $q->multi_param('sender[]');
+		my @tags = $q->multi_param('tags[]');
+
+		if ( ! defined $date || scalar @sender != 1 || scalar @tags < 1 || ! defined $filename || ! -e "classify/$filename" ) {
+			return [
+					  '200',
+			 [ 'Content-Type' => 'text/plain' ], [ "Failed" ] ];
+		}
+
+		my $debugInformation  = '';
+		my $newFilename = $archive->addFile("classify/$filename", $date, [ @sender ], [ @tags ], \$debugInformation);
+
+		my $content = <<EOHTML;
+Archived as $newFilename<br>
+<br>
+<a href="/">Back to overview</a>
+EOHTML
+		return [
+				  '200',
+		 [ 'Content-Type' => 'text/html' ], [ $content ] ];
 	}
 
 	my $template = Template->new('template.html');
