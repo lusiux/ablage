@@ -52,7 +52,7 @@ To archive a pdf in `./store` run the command given at the end of the html file 
 
 Currently a psgi mode is in development to drop the dependancy to apache2. 
 
-`uwsgi_psgi --http-socket :1237 --http-socket-modifier1 5 --psgi classify.psgi --processes 4 --master --check-static html --check-static ./`
+`uwsgi_psgi --http-socket :1237 --http-socket-modifier1 5 --psgi classify.psgi --processes 4 --master --check-static html`
 
 
 ## TODOs
