@@ -28,7 +28,7 @@ sub readInformation {
 
 	my @files = glob ("store/archive/*.pdf");
 	foreach my $file ( @files ) {
-		$file =~ /\d{4}-\d{2}-\d{2}-([^-]+)-(.+)\.pdf/;
+		$file =~ /\d{4}-\d{2}-\d{2}-([^-]+)-([^\.]+)(\.\d+)?\.pdf/;
 		my $sender = $1;
 		$self->{senders}->{$sender}++;
 		$self->{tagsBySender}->{$sender}->{'_total'}++;
@@ -69,11 +69,6 @@ sub addFile {
 	my $debugInformation = shift;
 
 	my $newFilename = $self->genFilename($file, $date, $sender, $tags, $debugInformation);
-
-	if ( -f "store/archive/$newFilename" ) {
-		print STDERR "store/archive/$newFilename already exists\n";
-		return -1;
-	}
 
 	rename $file, "store/archive/$newFilename" or warn $!;
 	print STDOUT "Archived as $newFilename\n";
@@ -133,7 +128,41 @@ sub genFilename {
 	my $tags = shift;
 	my $debugInformation = shift;
 
-	my $newFilename = sprintf '%s-%s-%s.pdf', $date, join('_', sort @$sender), join('_', sort @$tags);
+	my $counter = 0;
+
+	my $newFilename = '';
+	while ( 1 ) {
+		$newFilename = $self->genFilenameWithoutCheck($file, $date, $sender, $tags, $counter, $debugInformation);
+
+		if ( -f "store/archive/$newFilename" ) {
+			print STDERR "store/archive/$newFilename already exists\n";
+			$counter++;
+			next;
+		} else {
+			last;
+		}
+	}
+
+	return $newFilename;
+}
+
+sub genFilenameWithoutCheck {
+	my $self = shift;
+
+	my $file = shift;
+	my $date = shift;
+	my $sender = shift;
+	my $tags = shift;
+	my $counter = shift;
+	my $debugInformation = shift;
+
+	my $newFilename;
+	if ( $counter > 0 ) {
+		$newFilename = sprintf '%s-%s-%s.%d.pdf', $date, join('_', sort @$sender), join('_', sort @$tags), $counter;
+	} else {
+		$newFilename = sprintf '%s-%s-%s.pdf', $date, join('_', sort @$sender), join('_', sort @$tags);
+	}
+
 	$newFilename =~ s/ /_/g;
 	$newFilename =~ s/[^0\.\/\-\d\s\w]/_/g;
 
