@@ -26,6 +26,10 @@ sub new {
 sub readInformation {
 	my $self = shift;
 
+	$self->{senders} = {};
+	$self->{tagsBySender} = {};
+	$self->{tags} = {};
+
 	my @files = glob ("store/archive/*.pdf");
 	foreach my $file ( @files ) {
 		$file =~ /\d{4}-\d{2}-\d{2}-([^-]+)-([^\.]+)(\.\d+)?\.pdf/;
