@@ -156,14 +156,16 @@ sub findDates {
 					} else {
 						$dates->{$dateString}->{count}++;
 					}
-					$dates->{$dateString}->{points} += scoreDate($dayString, $monthString, $yearString);
+					my $score = scoreDate($dayString, $monthString, $yearString);
 
 					if ( defined $dayDot && $dayDot eq '.' ) {
-						$dates->{$dateString}->{points} += 1;
+						$score += 1;
 					}
 
+					$dates->{$dateString}->{points} = $score;
+
 					$dates->{$dateString}->{lineNumber} = $lineCounter;
-					$dates->{$dateString}->{line} = $line;
+					push @{$dates->{$dateString}->{line}}, { lineNumber => $lineCounter, text => $line, score => $score };
 					$dates->{$dateString}->{regexp} = $regexp;
 				}
 			}
@@ -190,16 +192,19 @@ sub findDates {
 				} else {
 					$dates->{$dateString}->{count}++;
 				}
-				$dates->{$dateString}->{points} += scoreDate($dayString, $monthString, $yearString);
+				my $score = scoreDate($dayString, $monthString, $yearString);
+
 				if ( defined $dayDot && $dayDot eq '.' ) {
-					$dates->{$dateString}->{points} += 1;
+					$score += 1;
 				}
 				if ( defined $monthDot && $monthDot eq '.' ) {
-					$dates->{$dateString}->{points} += 1;
+					$score += 1;
 				}
 
+				$dates->{$dateString}->{points} = $score;
+
 				$dates->{$dateString}->{lineNumber} = $lineCounter;
-				$dates->{$dateString}->{line} = $line;
+				push @{$dates->{$dateString}->{line}}, { lineNumber => $lineCounter, text => $line, score => $score };
 				$dates->{$dateString}->{regexp} = $regexp;
 			}
 		}
