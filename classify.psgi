@@ -166,11 +166,11 @@ EOHTML
 		Helper::findDates($text, $info->{dates}, ($searchYear-$i), \$debugInformation);
 	}
 
-	foreach my $date ( keys %{$info->{dates}} ) {
-		$info->{dates}->{$date}->{points} -= ( (($searchYear - substr($date, 0, 4))/2) * $info->{dates}->{$date}->{count} );
-	}
-
 	Helper::mergeDates($info->{dates});
+
+	foreach my $date ( keys %{$info->{dates}} ) {
+		$info->{dates}->{$date}->{points} -= (($searchYear - substr($date, 0, 4))/2);
+	}
 
 	# Apply all known regular expressions to find tags and sender
 	my $matches = [];
