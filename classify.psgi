@@ -10,7 +10,7 @@ use utf8;
 use CGI::PSGI;
 
 use FindBin;
-use lib "$FindBin::Bin/../";
+use lib $FindBin::Bin;
 
 use Helper;
 use Classes;
