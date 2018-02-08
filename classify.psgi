@@ -156,6 +156,7 @@ EOHTML
 		$monthRange = 3;
 	}
 	$monthRange *= -1;
+	$template->add('monthRange', $monthRange);
 
 	my $searchYear = DateTime->now()->year();
 	my $endYear = DateTime->now()->add( months => $monthRange )->year();
