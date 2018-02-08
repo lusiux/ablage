@@ -166,7 +166,7 @@ EOHTML
 	}
 
 	foreach my $date ( keys %{$info->{dates}} ) {
-		$info->{dates}->{$date}->{points} -= (($searchYear - substr($date, 0, 4))/2);
+		$info->{dates}->{$date}->{points} -= ( (($searchYear - substr($date, 0, 4))/2) * $info->{dates}->{$date}->{count} );
 	}
 
 	Helper::mergeDates($info->{dates});
