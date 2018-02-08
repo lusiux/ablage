@@ -287,7 +287,7 @@ EOHTML
 	} elsif ( scalar keys %{$info->{dates}} > 1 ) {
 		$htmlDateList = join "\n", map {
 			my $date = $_;
-			my $dateScore = $info->{dates}->{$date}->{points}/$info->{dates}->{$date}->{count};
+			my $dateScore = $info->{dates}->{$date}->{points};
 			$date = "<option value=\"$date\">$date ($dateScore)</option>";
 			$date =~ s/(\d{4})-(\d{2})-(\d{2})/$3.$2.$1/g;
 			$date;
