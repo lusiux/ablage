@@ -50,6 +50,26 @@ my $app = sub {
 	return [
 	        '200',
 	 [ 'Content-Type' => 'image/png' ], [ $cache->{$pdf} ] ];
+	} elsif ( $path =~ /^\/store\/thumbs\/([^\/]+.pdf)$/i ) {
+		my $pdf = $1;
+		$pdf .= '[0]';
+
+		if ( ! defined $cache->{$pdf} ) {
+			my $image = Image::Magick->new();
+			my $retVal = $image->Read('store/archive/' . $pdf);
+			warn $retVal if $retVal;
+			$image->Resize(geometry => "300x");
+			warn $retVal if $retVal;
+			my @data = $image->ImageToBlob(magick=>'png');
+
+			$cache->{$pdf} = $data[0];
+		} else {
+			print "Using cached img for $pdf\n";
+		}
+
+	return [
+	        '200',
+	 [ 'Content-Type' => 'image/png' ], [ $cache->{$pdf} ] ];
 	} elsif ( $path =~ /^\/images\/pdfs\/([^\/]+.pdf)$/i ) {
 		my $pdf = $1;
 		open PDF, '<', "classify/$pdf" or warn $!;
@@ -83,6 +103,45 @@ Archived as $newFilename<br>
 <br>
 <a href="/">Back to overview</a>
 EOHTML
+		return [
+				  '200',
+		 [ 'Content-Type' => 'text/html' ], [ $content ] ];
+	} elsif ( $path =~ /^\/store\/(sender|tags)\/([^\/]+)$/i ) {
+		my $content = '';
+		my @files = glob("store/$1/$2/*.pdf");
+		my $lastYear = 0;
+		foreach my $file ( sort { $b cmp $a } @files ) {
+			my $title = substr($file, length($path));
+			if ( $title =~ /^(\d{4})/ && $lastYear != $1 ) {
+				$content .= qq{
+				<h2>$1</h2>
+			};
+				$lastYear = $1;
+			}
+			$content .= qq{
+<div style="display:inline-block;text-align:center;margin:1em;margin-bottom:4em;">
+		<img style="border:1px solid black" src="/store/thumbs/$title">
+	<br>
+	$title
+</div>
+			};
+		}
+		return [
+				  '200',
+		 [ 'Content-Type' => 'text/html' ], [ $content ] ];
+	} elsif ( $path =~ /^\/store\/(sender|tags)\/$/i ) {
+		my $content = '<ul>';
+		my @files = glob("store/$1/*");
+		foreach my $file ( sort @files ) {
+			my $title = substr($file, length($path)-1);
+			$content .= qq{
+<li>
+<a href="$title">$title</a>
+</li>
+			};
+		}
+
+		$content .= '</ul>';
 		return [
 				  '200',
 		 [ 'Content-Type' => 'text/html' ], [ $content ] ];
