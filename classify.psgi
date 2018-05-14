@@ -106,7 +106,7 @@ EOHTML
 		return [
 				  '200',
 		 [ 'Content-Type' => 'text/html' ], [ $content ] ];
-	} elsif ( $path =~ /^\/store\/(sender|tags)\/([^\/]+)$/i ) {
+	} elsif ( $path =~ /^\/store\/(sender|tags|year)\/([^\/]+)$/i ) {
 		my $content = '';
 		my @files = glob("store/$1/$2/*.pdf");
 		my $lastYear = 0;
@@ -129,7 +129,7 @@ EOHTML
 		return [
 				  '200',
 		 [ 'Content-Type' => 'text/html' ], [ $content ] ];
-	} elsif ( $path =~ /^\/store\/(sender|tags)\/$/i ) {
+	} elsif ( $path =~ /^\/store\/(sender|tags|year)\/$/i ) {
 		my $content = '<ul>';
 		my @files = glob("store/$1/*");
 		foreach my $file ( sort @files ) {
